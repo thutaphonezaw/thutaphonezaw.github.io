@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hacker Portfolio</title>
+    <style>
+        /* General Styles */
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Courier New', monospace;
+            background-color: #000;
+            color: #00ff00;
+            overflow-x: hidden;
+        }
+        /* Terminal Container */
+        
+        .terminal {
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        /* Typing Effect */
+        
+        .typing {
+            border-right: 2px solid #00ff00;
+            white-space: nowrap;
+            overflow: hidden;
+            animation: blink 0.75s step-end infinite, typing 3s steps(40, end);
+        }
+        
+        @keyframes typing {
+            from {
+                width: 0;
+            }
+            to {
+                width: 100%;
+            }
+        }
+        
+        @keyframes blink {
+            50% {
+                border-color: transparent;
+            }
+        }
+        /* Navigation */
+        
+        nav {
+            margin-bottom: 20px;
+        }
+        
+        nav a {
+            color: #00ff00;
+            text-decoration: none;
+            margin-right: 15px;
+            font-weight: bold;
+        }
+        
+        nav a:hover {
+            text-decoration: underline;
+        }
+        /* Sections */
+        
+        section {
+            display: none;
+            margin-top: 20px;
+        }
+        
+        section.active {
+            display: block;
+        }
+        /* Hacking Animation */
+        
+        .hacking {
+            background-color: #002200;
+            padding: 10px;
+            border: 1px solid #00ff00;
+            margin-top: 20px;
+        }
+        
+        .hacking::after {
+            content: '';
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background-color: #00ff00;
+            animation: blink 0.75s step-end infinite;
+        }
+        /* Responsive Design */
+        
+        @media (max-width: 600px) {
+            .terminal {
+                padding: 10px;
+            }
+            nav a {
+                display: block;
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="terminal">
+        <!-- Navigation -->
+        <nav>
+            <a href="#about" onclick="showSection('about')">[ABOUT_ME]</a>
+            <a href="#experience" onclick="showSection('experience')">[EXPERIENCE]</a>
+            <a href="#projects" onclick="showSection('projects')">[PROJECTS]</a>
+        </nav>
+
+        <!-- Terminal Prompt -->
+        <div class="typing">root@Lux-portfolio:~$ ./start_portfolio.sh</div>
+
+        <!-- About Me Section -->
+        <section id="about" class="active">
+            <div class="hacking">Loading About Me...</div>
+            <div>
+                <h2>> WHOAMI</h2>
+                <p>
+                    Hi, I'm Lux, a Cybersecurity Analyst with 2+ years of experience in ethical hacking, penetration testing, and network security. I specialize in identifying vulnerabilities and securing systems against cyber threats.
+                </p>
+                <p>
+                    > SKILLS: Penetration Testing · Network Security · Incident Response · Cryptography
+                </p>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience">
+            <div class="hacking">Loading Experience...</div>
+            <div>
+                <h2>> EXPERIENCE</h2>
+                <p>
+                    <strong>> Senior Cybersecurity Analyst</strong><br> XYZ Corp (2020 - Present)<br> - Conducted penetration tests on enterprise networks.<br> - Developed incident response plans.<br> - Trained staff on security best practices.
+                </p>
+                <p>
+                    <strong>> Junior Penetration Tester</strong><br> ABC Security (2018 - 2020)<br> - Identified vulnerabilities in web applications.<br> - Assisted in red team exercises.<br> - Wrote detailed security reports.
+                </p>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects">
+            <div class="hacking">Loading Projects...</div>
+            <div>
+                <h2>> PROJECTS</h2>
+                <p>
+                    <strong>> Enterprise Network Security</strong><br> - Designed and implemented a secure network infrastructure for a Fortune 500 company.<br> - Reduced vulnerabilities by 80%.
+                </p>
+                <p>
+                    <strong>> Vulnerability Assessment Tool</strong><br> - Developed an automated tool to scan for vulnerabilities in web applications.<br> - Increased testing efficiency by 50%.
+                </p>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Show Selected Section
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Show the selected section
+            document.getElementById(sectionId).classList.add('active');
+
+            // Simulate hacking animation
+            const hackingDiv = document.querySelector(`#${sectionId} .hacking`);
+            hackingDiv.textContent = "Accessing data...";
+            setTimeout(() => {
+                hackingDiv.textContent = "Decrypting files...";
+                setTimeout(() => {
+                    hackingDiv.style.display = 'none';
+                }, 1000);
+            }, 1000);
+        }
+    </script>
+</body>
+
+</html>
