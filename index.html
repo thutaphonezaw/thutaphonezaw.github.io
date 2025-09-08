@@ -1,184 +1,437 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thu Ta Phone Zaw</title>
+    <title>LuxFord - Red Team Specialist & IT Auditor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* General Styles */
-        
+        /* --- Cybersecurity Green Terminal Theme --- */
+        :root {
+            --bg-dark: #0d0d0d; /* Deep Charcoal */
+            --accent-green: #39ff14; /* Electric Green */
+            --accent-glow: rgba(57, 255, 20, 0.7);
+            --text-light: #cccccc; /* Light Gray */
+            --text-heading: #f5f5f5; /* Off-white */
+            --border-color: rgba(57, 255, 20, 0.25);
+            --card-bg: rgba(20, 20, 20, 0.6); 
+        }
+
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Courier New', monospace;
-            background-color: #000;
-            color: #00ff00;
-            overflow-x: hidden;
-        }
-        /* Terminal Container */
-        
-        .terminal {
-            padding: 20px;
-            max-width: 800px;
-            margin: 0 auto;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        /* Typing Effect */
-        
-        .typing {
-            border-right: 2px solid #00ff00;
-            white-space: nowrap;
-            overflow: hidden;
-            animation: blink 0.75s step-end infinite, typing 3s steps(40, end);
+            font-family: 'IBM Plex Mono', monospace;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            background-image:
+                linear-gradient(rgba(57, 255, 20, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(57, 255, 20, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
         }
         
-        @keyframes typing {
-            from {
-                width: 0;
-            }
-            to {
-                width: 100%;
-            }
+        #canvas-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        ::selection {
+            background: var(--accent-green);
+            color: var(--bg-dark);
         }
         
-        @keyframes blink {
-            50% {
-                border-color: transparent;
-            }
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
         }
-        /* Navigation */
-        
-        nav {
-            margin-bottom: 20px;
+        .glass-card:hover {
+            border-color: var(--accent-green);
+            box-shadow: 0 0 20px rgba(57, 255, 20, 0.15);
         }
-        
-        nav a {
-            color: #00ff00;
-            text-decoration: none;
-            margin-right: 15px;
-            font-weight: bold;
+
+        .section-fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
-        
-        nav a:hover {
-            text-decoration: underline;
-        }
-        /* Sections */
-        
-        section {
-            display: none;
-            margin-top: 20px;
+        .section-fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
         
-        section.active {
-            display: block;
+        .skill-tag {
+            background-color: rgba(57, 255, 20, 0.1);
+            color: var(--accent-green);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s;
         }
-        /* Hacking Animation */
-        
-        .hacking {
-            background-color: #002200;
-            padding: 5px;
-            border: 1px solid #00ff00;
-            margin-top: 20px;
+        .skill-tag:hover {
+            background-color: rgba(57, 255, 20, 0.2);
+            color: var(--text-heading);
         }
         
-        .hacking::after {
+        .glow-button {
+             background-color: var(--accent-green);
+             color: #000;
+             box-shadow: 0 0 8px var(--accent-glow), 0 0 15px var(--accent-glow);
+             transition: all 0.3s;
+        }
+        .glow-button:hover {
+            box-shadow: 0 0 15px var(--accent-glow), 0 0 30px var(--accent-glow);
+        }
+        
+        /* New Navigation Styles */
+        .nav-link {
+            position: relative;
+            padding: 8px 12px;
+            color: var(--text-light);
+            transition: color 0.3s;
+        }
+        .nav-link::before,
+        .nav-link::after {
             content: '';
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            background-color: #00ff00;
-            animation: blink 0.75s step-end infinite;
+            position: absolute;
+            width: 0;
+            height: 1px;
+            background-color: var(--accent-green);
+            transition: width 0.3s ease-out;
         }
-        /* Responsive Design */
-        
-        @media (max-width: 600px) {
-            .terminal {
-                padding: 10px;
-            }
-            nav a {
-                display: block;
-                margin: 10px 0;
-            }
+        .nav-link::before {
+            top: 0;
+            left: 0;
         }
+        .nav-link::after {
+            bottom: 0;
+            right: 0;
+        }
+        .nav-link:hover {
+            color: var(--accent-green);
+        }
+        .nav-link:hover::before,
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
     </style>
 </head>
+<body class="overflow-x-hidden">
+    <canvas id="canvas-bg"></canvas>
+    <!-- Header & Navigation -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-black/50 backdrop-blur-lg border-b border-[var(--border-color)]">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-slate-100 hover:text-[var(--accent-green)] transition-colors">LuxFord <span class="text-[var(--accent-green)]">_</span></a>
+            <nav class="hidden md:flex space-x-4 items-center">
+                <a href="#about" class="nav-link">[ about_me ]</a>
+                <a href="#expertise" class="nav-link">[ expertise ]</a>
+                <a href="#casestudies" class="nav-link">[ case_studies ]</a>
+                <a href="#contact" class="ml-4 border border-[var(--accent-green)] text-[var(--accent-green)] font-medium py-2 px-4 hover:bg-[var(--accent-green)] hover:text-black transition-all duration-300">initiate_contact</a>
+            </nav>
+            <button id="mobile-menu-button" class="md:hidden text-slate-300">
+                <i data-lucide="menu"></i>
+            </button>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
+            <a href="#about" class="block py-2 text-slate-300 hover:text-[var(--accent-green)]">[ about_me ]</a>
+            <a href="#expertise" class="block py-2 text-slate-300 hover:text-[var(--accent-green)]">[ expertise ]</a>
+            <a href="#casestudies" class="block py-2 text-slate-300 hover:text-[var(--accent-green)]">[ case_studies ]</a>
+            <a href="#contact" class="block mt-2 border border-[var(--accent-green)] text-[var(--accent-green)] font-medium py-2 px-4 text-center hover:bg-[var(--accent-green)] hover:text-black">initiate_contact</a>
+        </div>
+    </header>
 
-<body>
-    <div class="terminal">
-        <!-- Navigation -->
-        <nav>
-            <a href="#about" onclick="showSection('about')">[ABOUT_ME]</a>
-            <a href="#projects" onclick="showSection('projects')">[Activity]</a>
-        </nav>
+    <main class="container mx-auto px-6 pt-24 md:pt-32">
 
-        <!-- Terminal Prompt -->
-        <div class="typing">root@Lux-portfolio:~$ ./start_portfolio.sh</div>
+        <!-- Hero Section -->
+        <section id="hero" class="min-h-[80vh] flex items-center">
+            <div class="max-w-4xl">
+                <h1 id="hero-title" class="text-5xl md:text-7xl font-extrabold leading-tight text-slate-100">
+                    Securing Digital Environments Through Offensive Insight.
+                </h1>
+                <p class="mt-6 text-xl md:text-2xl text-slate-400">
+                    I'm LuxFord, a cybersecurity professional specializing in penetration testing, IT auditing, and GRC. I identify vulnerabilities, ensure ISO 27001 compliance, and build resilient security postures from an adversarial perspective.
+                </p>
+                <div class="mt-10 flex flex-wrap gap-4">
+                    <a href="#casestudies" class="font-bold py-3 px-6 glow-button">Review Case Studies</a>
+                    <a href="https://github.com/thutaphonezaw" target="_blank" class="border border-[var(--border-color)] hover:border-[var(--accent-green)] text-slate-300 font-bold py-3 px-6 transition-colors inline-flex items-center gap-2">
+                        <i data-lucide="github"></i> GitHub Intel
+                    </a>
+                </div>
+            </div>
+        </section>
 
         <!-- About Me Section -->
-        <section id="about" class="active">
-            <div class="hacking">Loading About Me...</div>
-            <div>
-                <h2>> WHOAMI</h2>
-                <p>
-                    Hi, I'm Lux, a Cybersecurity Analyst with 2+ years of experience in ethical hacking, penetration testing, and network security. I specialize in identifying vulnerabilities and securing systems against cyber threats.
-                </p>
-                <p>
-                    > SKILLS: Penetration Testing · Network Security · Security Audit & Risk Assessment · Web Application Security
-                </p>
+        <section id="about" class="py-20 md:py-32 section-fade-in">
+            <h2 class="text-4xl font-bold text-center mb-12 text-slate-100">About Me</h2>
+            <div class="max-w-5xl mx-auto glass-card rounded-lg p-8 md:p-12 flex flex-col md:flex-row items-center gap-12">
+                <div class="w-48 h-48 md:w-56 md:h-56 rounded-full overflow-hidden flex-shrink-0 border-2 border-[var(--accent-green)] p-1 shadow-lg shadow-green-500/10">
+                    <img src="https://placehold.co/256x256/0d0d0d/39ff14?text=LF" alt="LuxFord" class="w-full h-full object-cover rounded-full">
+                </div>
+                <div class="text-center md:text-left">
+                     <p class="text-lg text-slate-300 mb-4">
+                        With over two years of hands-on experience, my approach to cybersecurity is rooted in a simple principle: to build the strongest defense, you must understand the offense. As a certified Red Team Analyst and ISO 27001 Lead Auditor, I bridge the gap between adversarial tactics and robust compliance frameworks.
+                    </p>
+                    <p class="text-lg text-slate-300">
+                        I am adept at executing in-depth security assessments for web, API, and network environments, and I am passionate about empowering organizations through comprehensive security awareness training and measurable risk mitigation strategies.
+                    </p>
+                </div>
             </div>
         </section>
 
-        <!-- Projects Section -->
-        <section id="projects">
-            <div class="hacking">Loading Activity...</div>
-            <div>
-                <h2>> Cybersecurity Activity</h2>
-                <p>
-                    <strong>> Joining MetaCTF Flash CTF December 2024 </strong>
-                </p>
-                <p>
-                    <strong>> Advent of Cyber 2024 (Tryhackme) </strong>
-                </p>
-                <p>
-                    <strong>> Participate as local auditor in  IT audit project</strong>
-                </p>
-                <p>
-                    <strong>> Monthly Top 10 in Hackthebox and Tryhackme</strong>
-                </p>
-                <p>
-                    <strong>> Conducting cyberawarness content and phishing simulation every months</strong>
-                </p>
-
+        <!-- Expertise Section -->
+        <section id="expertise" class="py-20 md:py-32 section-fade-in">
+            <h2 class="text-4xl font-bold text-center mb-16 text-slate-100">Areas of Expertise</h2>
+            <div class="max-w-6xl mx-auto grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-4 gap-6">
+                <div class="glass-card p-6 rounded-lg flex flex-col items-center justify-center gap-4 text-center">
+                    <i data-lucide="swords" class="w-12 h-12 text-[var(--accent-green)]"></i><span class="font-semibold text-slate-200">Penetration Testing</span>
+                </div>
+                <div class="glass-card p-6 rounded-lg flex flex-col items-center justify-center gap-4 text-center">
+                    <i data-lucide="clipboard-check" class="w-12 h-12 text-[var(--accent-green)]"></i><span class="font-semibold text-slate-200">ISO/IEC 27001 Audits</span>
+                </div>
+                <div class="glass-card p-6 rounded-lg flex flex-col items-center justify-center gap-4 text-center">
+                    <i data-lucide="shield-alert" class="w-12 h-12 text-[var(--accent-green)]"></i><span class="font-semibold text-slate-200">Risk Assessment</span>
+                </div>
+                <div class="glass-card p-6 rounded-lg flex flex-col items-center justify-center gap-4 text-center">
+                    <i data-lucide="scan-search" class="w-12 h-12 text-[var(--accent-green)]"></i><span class="font-semibold text-slate-200">Vulnerability Management</span>
+                </div>
+                 <div class="glass-card p-6 rounded-lg flex flex-col items-center justify-center gap-4 text-center">
+                    <i data-lucide="key-round" class="w-12 h-12 text-[var(--accent-green)]"></i><span class="font-semibold text-slate-200">Red Team Operations</span>
+                </div>
+                <div class="glass-card p-6 rounded-lg flex flex-col items-center justify-center gap-4 text-center">
+                    <i data-lucide="users" class="w-12 h-12 text-[var(--accent-green)]"></i><span class="font-semibold text-slate-200">Social Engineering</span>
+                </div>
+                <div class="glass-card p-6 rounded-lg flex flex-col items-center justify-center gap-4 text-center">
+                    <i data-lucide="presentation" class="w-12 h-12 text-[var(--accent-green)]"></i><span class="font-semibold text-slate-200">Awareness Training</span>
+                </div>
+                <div class="glass-card p-6 rounded-lg flex flex-col items-center justify-center gap-4 text-center">
+                    <i data-lucide="file-check-2" class="w-12 h-12 text-[var(--accent-green)]"></i><span class="font-semibold text-slate-200">Policy Development</span>
+                </div>
             </div>
         </section>
-    </div>
+
+        <!-- Case Studies Section -->
+        <section id="casestudies" class="py-20 md:py-32 section-fade-in">
+            <h2 class="text-4xl font-bold text-center mb-16 text-slate-100">Case Studies</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Case Study 1 -->
+                <div class="glass-card rounded-lg overflow-hidden group">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-slate-100 mb-2">Enterprise Security Awareness Initiative</h3>
+                        <p class="text-slate-400 mb-4">Designed and executed a comprehensive security awareness program for an organization with over 3,000 employees. Led 5+ phishing simulation campaigns, resulting in a measurable increase in user reporting rates and a significant reduction in click-through rates on malicious links.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="skill-tag text-sm font-medium py-1 px-3 rounded-md">Phishing Simulation</span>
+                            <span class="skill-tag text-sm font-medium py-1 px-3 rounded-md">Awareness Training</span>
+                            <span class="skill-tag text-sm font-medium py-1 px-3 rounded-md">Behavior Monitoring</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Case Study 2 -->
+                <div class="glass-card rounded-lg overflow-hidden group">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-slate-100 mb-2">Vulnerability Remediation Program</h3>
+                        <p class="text-slate-400 mb-4">Established a systematic vulnerability management framework. Performed enterprise-wide network and web application scans that identified over 100 critical and high-severity findings. Collaborated with IT and development teams to achieve a 95% remediation rate within SLA.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                           <span class="skill-tag text-sm font-medium py-1 px-3 rounded-md">Vulnerability Scanning</span>
+                           <span class="skill-tag text-sm font-medium py-1 px-3 rounded-md">Risk Prioritization</span>
+                           <span class="skill-tag text-sm font-medium py-1 px-3 rounded-md">Patch Management</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-20 md:py-32 text-center section-fade-in">
+             <h2 class="text-4xl font-bold mb-4 text-slate-100">Initiate Contact</h2>
+             <p class="max-w-2xl mx-auto text-lg text-slate-300 mb-8">
+                I am available for red team engagements and comprehensive IT audits. If you need to rigorously test your defenses or verify your compliance posture, let's connect.
+             </p>
+             <a href="mailto:thutaphonezaw1998@gmail.com" class="font-bold py-4 px-8 glow-button inline-flex items-center gap-2 text-xl">
+                <i data-lucide="send"></i> Open Secure Channel
+             </a>
+        </section>
+
+    </main>
+
+    <footer class="border-t border-[var(--border-color)] mt-20">
+        <div class="container mx-auto px-6 py-6 text-center text-slate-500">
+            <p>&copy; 2024 LuxFord // STATUS: OPERATIONAL</p>
+        </div>
+    </footer>
 
     <script>
-        // Show Selected Section
-        function showSection(sectionId) {
-            // Hide all sections
-            document.querySelectorAll('section').forEach(section => {
-                section.classList.remove('active');
+        lucide.createIcons();
+
+        // --- Mobile Menu Toggle ---
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+        });
+
+        // --- Section Fade-in on Scroll ---
+        const sections = document.querySelectorAll('.section-fade-in');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
             });
+        }, { threshold: 0.1 });
+        sections.forEach(section => observer.observe(section));
 
-            // Show the selected section
-            document.getElementById(sectionId).classList.add('active');
+        // --- Animated Canvas Background ---
+        const canvas = document.getElementById('canvas-bg');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        const accentColor = 'rgba(57, 255, 20, 0.8)'; // New accent color for particles
 
-            // Simulate hacking animation
-            const hackingDiv = document.querySelector(`#${sectionId} .hacking`);
-            hackingDiv.textContent = "Accessing data...";
-            setTimeout(() => {
-                hackingDiv.textContent = "Decrypting files...";
-                setTimeout(() => {
-                    hackingDiv.style.display = 'none';
-                }, 1000);
-            }, 1000);
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
         }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.3;
+                this.vy = (Math.random() - 0.5) * 0.3;
+                this.size = Math.random() * 1.5 + 0.5;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            }
+            draw() {
+                ctx.fillStyle = accentColor;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+        
+        function initParticles() {
+            particles = [];
+            const particleCount = Math.floor((canvas.width * canvas.height) / 20000);
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function handleParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < 120) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(57, 255, 20, ${1 - distance / 120})`;
+                        ctx.lineWidth = 0.3;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(handleParticles);
+        }
+
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+            initParticles();
+        });
+
+        resizeCanvas();
+        initParticles();
+        handleParticles();
+
+        // --- Hero Text Scramble Effect ---
+        class TextScramble {
+            constructor(el) {
+                this.el = el;
+                this.chars = '!<>-_\\/[]{}—=+*^?#________';
+                this.update = this.update.bind(this);
+            }
+            setText(newText) {
+                const oldText = this.el.innerText;
+                const length = Math.max(oldText.length, newText.length);
+                const promise = new Promise(resolve => this.resolve = resolve);
+                this.queue = [];
+                for (let i = 0; i < length; i++) {
+                    const from = oldText[i] || '';
+                    const to = newText[i] || '';
+                    const start = Math.floor(Math.random() * 40);
+                    const end = start + Math.floor(Math.random() * 40);
+                    this.queue.push({ from, to, start, end });
+                }
+                cancelAnimationFrame(this.frameRequest);
+                this.frame = 0;
+                this.update();
+                return promise;
+            }
+            update() {
+                let output = '';
+                let complete = 0;
+                for (let i = 0, n = this.queue.length; i < n; i++) {
+                    let { from, to, start, end, char } = this.queue[i];
+                    if (this.frame >= end) {
+                        complete++;
+                        output += to;
+                    } else if (this.frame >= start) {
+                        if (!char || Math.random() < 0.28) {
+                            char = this.randomChar();
+                            this.queue[i].char = char;
+                        }
+                        output += `<span class="opacity-50">${char}</span>`;
+                    } else {
+                        output += from;
+                    }
+                }
+                this.el.innerHTML = output;
+                if (complete === this.queue.length) {
+                    this.resolve();
+                } else {
+                    this.frameRequest = requestAnimationFrame(this.update);
+                    this.frame++;
+                }
+            }
+            randomChar() {
+                return this.chars[Math.floor(Math.random() * this.chars.length)];
+            }
+        }
+        
+        const heroTitle = document.getElementById('hero-title');
+        const fx = new TextScramble(heroTitle);
+        
+        const originalText = heroTitle.innerText;
+
+        // Initial scramble on load
+        setTimeout(() => {
+             fx.setText(originalText);
+        }, 1000);
+        
+        // Re-run the scramble animation every 60 seconds
+        setInterval(() => {
+            fx.setText(originalText);
+        }, 60000);
+        
     </script>
 </body>
-
 </html>
+
+
+
