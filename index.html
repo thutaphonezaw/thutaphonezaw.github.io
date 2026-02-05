@@ -1,524 +1,857 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thu Ta Phone Zaw - Cybersecurity & IT Professional</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <title>Cybersecurity Analyst | Penetration Tester Portfolio</title>
     <style>
-        /* --- Cybersecurity Green Terminal Theme --- */
+        /* Modern Reset & Base Styles */
         
          :root {
-            --bg-dark: #0d0d0d;
-            /* Deep Charcoal */
-            --accent-green: #39ff14;
-            /* Electric Green */
-            --accent-glow: rgba(57, 255, 20, 0.7);
-            --text-light: #cccccc;
-            /* Light Gray */
-            --text-heading: #f5f5f5;
-            /* Off-white */
-            --border-color: rgba(57, 255, 20, 0.25);
-            --card-bg: rgba(20, 20, 20, 0.6);
+            --bg-color: #050505;
+            --surface-color: #0f0f0f;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --accent-color: #00ff41;
+            /* Matrix Green */
+            --accent-dim: rgba(0, 255, 65, 0.1);
+            --border-color: #333;
+            --font-mono: 'Courier Prime', 'Fira Code', monospace;
+            --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
         
         body {
-            font-family: 'IBM Plex Mono', monospace;
-            background-color: var(--bg-dark);
-            color: var(--text-light);
-            background-image: linear-gradient(rgba(57, 255, 20, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(57, 255, 20, 0.05) 1px, transparent 1px);
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            /* Reverted to Normal Sans */
+            line-height: 1.6;
+            overflow-x: hidden;
+            /* Grid Background */
+            background-image: linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px);
             background-size: 30px 30px;
         }
         
-        #canvas-bg {
+        #network-canvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: -1;
-            opacity: 0.3;
+            /* Behind content but above background color */
         }
         
-         ::selection {
-            background: var(--accent-green);
-            color: var(--bg-dark);
+        a {
+            text-decoration: none;
+            color: var(--accent-color);
+            transition: all 0.3s ease;
         }
         
-        .glass-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid var(--border-color);
-            transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+        a:hover {
+            color: #fff;
+            text-shadow: 0 0 10px var(--accent-color);
         }
         
-        .glass-card:hover {
-            border-color: var(--accent-green);
-            box-shadow: 0 0 20px rgba(57, 255, 20, 0.15);
+        h1,
+        h2,
+        h3,
+        h4,
+        .mono {
+            font-family: var(--font-mono);
+            /* Headers stay Mono */
+            letter-spacing: -0.5px;
         }
         
-        .section-fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        h1 {
+            font-weight: 700;
+            text-transform: none;
         }
         
-        .section-fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
+        /* Scanline Overlay */
         
-        .skill-tag {
-            background-color: rgba(57, 255, 20, 0.1);
-            color: var(--accent-green);
-            border: 1px solid var(--border-color);
-            transition: all 0.3s;
-        }
-        
-        .skill-tag:hover {
-            background-color: rgba(57, 255, 20, 0.2);
-            color: var(--text-heading);
-        }
-        
-        .glow-button {
-            background-color: var(--accent-green);
-            color: #000;
-            box-shadow: 0 0 8px var(--accent-glow), 0 0 15px var(--accent-glow);
-            transition: all 0.3s;
-        }
-        
-        .glow-button:hover {
-            box-shadow: 0 0 15px var(--accent-glow), 0 0 30px var(--accent-glow);
-        }
-        
-        .nav-link {
-            position: relative;
-            padding: 8px 12px;
-            color: var(--text-light);
-            transition: color 0.3s;
-        }
-        
-        .nav-link::before,
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 1px;
-            background-color: var(--accent-green);
-            transition: width 0.3s ease-out;
-        }
-        
-        .nav-link::before {
+        .scanlines {
+            position: fixed;
             top: 0;
             left: 0;
-        }
-        
-        .nav-link::after {
-            bottom: 0;
-            right: 0;
-        }
-        
-        .nav-link:hover {
-            color: var(--accent-green);
-        }
-        
-        .nav-link:hover::before,
-        .nav-link:hover::after {
             width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0.2));
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 1000;
+            opacity: 0.3;
+        }
+        /* Header / Nav */
+        
+        header {
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(5, 5, 5, 0.9);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(5px);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.2rem;
+            font-weight: bold;
+            letter-spacing: -1px;
+            font-family: var(--font-mono);
+        }
+        
+        .logo::before {
+            content: "> ";
+            color: var(--accent-color);
+        }
+        /* Footer */
+        
+        footer {
+            padding: 30px 0;
+            text-align: center;
+            font-size: 1rem;
+            color: #555;
+            /* Matched color to 'above' text */
+            font-family: var(--font-mono);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .nav-links a {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-family: var(--font-mono);
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+        /* Hero Section */
+        
+        .hero {
+            padding: 100px 0;
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            background: var(--surface-color);
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            padding: 5px 10px;
+            font-size: 0.8rem;
+            font-family: var(--font-mono);
+            margin-bottom: 20px;
+            border-radius: 4px;
+            box-shadow: 0 0 10px var(--accent-dim);
+        }
+        
+        .blink {
+            animation: blink 1s step-end infinite;
+        }
+        
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+        
+        .role-title {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            font-family: var(--font-mono);
+        }
+        /* Hero Layout Text + ASCII */
+        
+        .bio-container {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .hero-text {
+            max-width: 500px;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 0;
+        }
+        /* ASCII Art */
+        
+        .ascii-art {
+            font-family: 'Courier Prime', monospace;
+            font-size: 8px;
+            line-height: 8px;
+            white-space: pre;
+            color: var(--accent-color);
+            text-align: center;
+            opacity: 0.9;
+            filter: drop-shadow(0 0 5px var(--accent-color));
+        }
+        
+        .cta-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: transparent;
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            font-family: var(--font-mono);
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .cta-btn:hover {
+            background: var(--accent-dim);
+            box-shadow: 0 0 20px var(--accent-dim);
+            transform: translateY(-2px);
+        }
+        /* Sections */
+        
+        section {
+            padding: 80px 0;
+            border-bottom: 1px solid #1a1a1a;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            font-family: var(--font-mono);
+        }
+        
+        .section-title::after {
+            content: "";
+            display: block;
+            height: 1px;
+            background: #333;
+            flex-grow: 1;
+            margin-left: 20px;
+        }
+        
+        .section-title span {
+            color: var(--accent-color);
+            margin-right: 10px;
+        }
+        /* Mini Pixel Art for Titles */
+        
+        .pixel-deco {
+            font-size: 1rem;
+            margin-right: 10px;
+            color: var(--accent-color);
+            vertical-align: middle;
+            display: inline-block;
+            image-rendering: pixelated;
+        }
+        /* Grid Layouts */
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        /* Cards */
+        
+        .card {
+            background: var(--surface-color);
+            padding: 25px;
+            border: 1px solid #222;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-5px);
+        }
+        
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 2px;
+            height: 0;
+            background: var(--accent-color);
+            transition: height 0.3s ease;
+        }
+        
+        .card:hover::before {
+            height: 100%;
+        }
+        
+        .card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+        
+        .card p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+        
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .tech-tag {
+            font-size: 0.8rem;
+            font-family: var(--font-mono);
+            color: var(--accent-color);
+            background: rgba(0, 255, 65, 0.05);
+            padding: 4px 8px;
+            border-radius: 2px;
+        }
+        /* Experience List */
+        
+        .experience-item {
+            margin-bottom: 40px;
+            padding-left: 20px;
+            border-left: 1px solid #333;
+            position: relative;
+        }
+        
+        .experience-item::before {
+            content: "";
+            position: absolute;
+            left: -5px;
+            top: 5px;
+            width: 9px;
+            height: 9px;
+            background: var(--bg-color);
+            border: 1px solid var(--accent-color);
+            border-radius: 50%;
+        }
+        
+        .exp-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .exp-role {
+            font-size: 1.2rem;
+            color: #fff;
+            font-weight: bold;
+        }
+        
+        .exp-company {
+            color: var(--accent-color);
+            font-family: var(--font-mono);
+        }
+        
+        .exp-date {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        /* 3D Cube (Restored) */
+        
+        .cube-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 600px;
+            width: 200px;
+            height: 200px;
+        }
+        
+        .cube {
+            width: 100px;
+            height: 100px;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: rotateCube 10s infinite linear;
+        }
+        
+        .cube-face {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border: 2px solid var(--accent-color);
+            background: rgba(0, 255, 65, 0.1);
+            box-shadow: 0 0 15px var(--accent-dim);
+        }
+        /* Front */
+        
+        .cube-face:nth-child(1) {
+            transform: rotateY(0deg) translateZ(50px);
+        }
+        /* Right */
+        
+        .cube-face:nth-child(2) {
+            transform: rotateY(90deg) translateZ(50px);
+        }
+        /* Back */
+        
+        .cube-face:nth-child(3) {
+            transform: rotateY(180deg) translateZ(50px);
+        }
+        /* Left */
+        
+        .cube-face:nth-child(4) {
+            transform: rotateY(-90deg) translateZ(50px);
+        }
+        /* Top */
+        
+        .cube-face:nth-child(5) {
+            transform: rotateX(90deg) translateZ(50px);
+        }
+        /* Bottom */
+        
+        .cube-face:nth-child(6) {
+            transform: rotateX(-90deg) translateZ(50px);
+        }
+        
+        @keyframes rotateCube {
+            from {
+                transform: rotateX(0deg) rotateY(0deg);
+            }
+            to {
+                transform: rotateX(360deg) rotateY(360deg);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .bio-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            /* Fixed lint */
+            .ascii-art {
+                font-size: 6px;
+            }
+            h1 {
+                font-size: 2.5rem;
+            }
+            .hero {
+                padding: 60px 0;
+            }
+        }
+        /* Utility */
+        
+        .terminal-box {
+            background: #000;
+            border: 1px solid var(--accent-color);
+            /* Updated to visible green border */
+            padding: 20px;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            color: #ccc;
+            margin-top: 20px;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.05);
+        }
+        
+        .cmd-prompt::before {
+            content: "user@cyber-portfolio:~$ ";
+            color: var(--accent-color);
         }
     </style>
+    <!-- Google Fonts for better typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 
-<body class="overflow-x-hidden">
-    <canvas id="canvas-bg"></canvas>
-    <header class="fixed top-0 left-0 right-0 z-50 bg-black/50 backdrop-blur-lg border-b border-[var(--border-color)]">
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#" class="text-xl font-bold text-slate-100 hover:text-[var(--accent-green)] transition-colors">Thu Ta Phone Zaw <span class="text-[var(--accent-green)]">_</span></a>
-            <nav class="hidden md:flex space-x-2 items-center">
-                <a href="#about" class="nav-link">[ about_me ]</a>
-                <a href="#expertise" class="nav-link">[ expertise ]</a>
-                <a href="#certs" class="nav-link">[ certifications ]</a>
-                <a href="#casestudies" class="nav-link">[ case_studies ]</a>
-                <a href="#contact" class="ml-4 border border-[var(--accent-green)] text-[var(--accent-green)] font-medium py-2 px-4 hover:bg-[var(--accent-green)] hover:text-black transition-all duration-300">initiate_contact</a>
+<body>
+    <canvas id="network-canvas"></canvas>
+    <div class="scanlines"></div>
+
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">SEC_ANALYST</a>
+                <div class="nav-links">
+                    <a href="#about">About</a>
+                    <a href="#skills">Skills</a>
+                    <a href="#experience">Experience</a>
+                    <a href="#contact">Contact</a>
+                </div>
             </nav>
-            <button id="mobile-menu-button" class="md:hidden text-slate-300">
-                <i data-lucide="menu"></i>
-            </button>
-        </div>
-        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
-            <a href="#about" class="block py-2 text-slate-300 hover:text-[var(--accent-green)]">[ about_me ]</a>
-            <a href="#expertise" class="block py-2 text-slate-300 hover:text-[var(--accent-green)]">[ expertise ]</a>
-            <a href="#certs" class="block py-2 text-slate-300 hover:text-[var(--accent-green)]">[ certifications ]</a>
-            <a href="#casestudies" class="block py-2 text-slate-300 hover:text-[var(--accent-green)]">[ case_studies ]</a>
-            <a href="#contact" class="block mt-2 border border-[var(--accent-green)] text-[var(--accent-green)] font-medium py-2 px-4 text-center hover:bg-[var(--accent-green)] hover:text-black">initiate_contact</a>
         </div>
     </header>
 
-    <main class="container mx-auto px-6 pt-24 md:pt-32">
+    <main>
+        <section class="hero container">
+            <div class="status-badge">
+                <span class="blink">●</span> System Online // Available for Hire
+            </div>
+            <h1>Securing Digital Frontiers</h1>
+            <div class="role-title">Cybersecurity Analyst & Penetration Tester</div>
 
-        <section id="hero" class="min-h-[80vh] flex items-center">
-            <div class="max-w-4xl">
-                <h1 id="hero-title" class="text-5xl md:text-7xl font-extrabold leading-tight text-slate-100">
-                    Securing Digital Environments Through Offensive Insight.
-                </h1>
-                <p class="mt-6 text-xl md:text-2xl text-slate-400">
-                    A Cybersecurity and IT professional with 3 years of experience in penetration testing, IT auditing, and GRC. I identify vulnerabilities, ensure ISO 27001 compliance, and build resilient security postures from an adversarial perspective.
+            <div class="bio-container">
+                <p class="hero-text">
+                    3+ years of experience in SOC operations, VAPT, and GRC. Translating technical risks into business-focused remediation.
                 </p>
-                <div class="mt-10 flex flex-wrap gap-4">
-                    <a href="#casestudies" class="font-bold py-3 px-6 glow-button">Review Case Studies</a>
-                    <a href="https://github.com/thutaphonezaw" target="_blank" class="border border-[var(--border-color)] hover:border-[var(--accent-green)] text-slate-300 font-bold py-3 px-6 transition-colors inline-flex items-center gap-2">
-                        <i data-lucide="github"></i> GitHub Intel
-                    </a>
+
+                <div class="ascii-container">
+                    <!-- ASCII Art Hoodie Man V2 -->
+                    <pre class="ascii-art">
+@@@@@@@   @@@@@@@@  @@@  @@@  @@@ @@@     @@@@@@@@      @@@@@@  @@@@@@@@@@  @@@@@@@  @@@  @@@ 
+ @@@@@@@@  @@@@@@@@  @@@@ @@@  @@@ @@@     @@@@@@@@     @@@@@@@  @@@@@@@@@@  @@@@@@@  @@@  @@@ 
+ @@!  @@@  @@!       @@!@!@@@  @@! !@@          @@!     !@@      @@! @@! @@!   @@!    @@!  @@@ 
+ !@!  @!@  !@!       !@!!@!@!  !@! @!!          !@!     !@!      !@! !@! !@!   !@!    !@!  @!@ 
+ @!@  !@!  @!!!:!    @!@ !!@!   !@!@!           @!!     !!@@!!   @!! !!@ @!@   @!!    @!@!@!@! 
+ !@!  !!!  !!!!!:    !@!  !!!    @!!!           !!!      !!@!!!  !@!   ! !@!   !!!    !!!@!!!! 
+ !!:  !!!  !!:       !!:  !!!    !!:            !!:          !:! !!:     !!:   !!:    !!:  !!! 
+ :!:  @!@  :!:       :!:  !:!    :!:            :!:         !:!  :!:     :!:   :!:    :!:  !:! 
+  :::: ::   :: ::::   ::   ::     ::             ::     :::: ::   :      :      :      ::  ::: 
+  :: :  :   : :: ::   ::   :      :              :      :: : :    :      :      :      :   : :
+
+
+
+                    </pre>
                 </div>
             </div>
+
+            <a href="#contact" class="cta-btn">Initiate_Contact()</a>
         </section>
 
-        <section id="about" class="py-20 md:py-32 section-fade-in">
-            <h2 class="text-4xl font-bold text-center mb-12 text-slate-100">About Me</h2>
-            <div class="max-w-5xl mx-auto glass-card rounded-lg p-8 md:p-12 flex flex-col md:flex-row items-center gap-12">
-                <div class="w-48 h-48 md:w-56 md:h-56 rounded-full overflow-hidden flex-shrink-0 border-2 border-[var(--accent-green)] p-1 shadow-lg shadow-green-500/10">
-                    <img src="https://placehold.co/256x256/0d0d0d/39ff14?text=TTZ" alt="Thu Ta Phone Zaw" class="w-full h-full object-cover rounded-full">
-                </div>
-                <div class="text-center md:text-left">
-                    <p class="text-lg text-slate-300 mb-4">
-                        With three years of combined experience, my approach to cybersecurity is rooted in a simple principle: to build the strongest defense, you must understand the offense. As a certified Red Team Analyst and ISO 27001 Lead Auditor, I bridge the gap between
-                        adversarial tactics and robust compliance frameworks.
+        <section id="about" class="container">
+            <h2 class="section-title">
+                <span style="font-size: 20px; vertical-align: middle;">
+                    <!-- Small Alien/Invader Pixel Art -->
+                    ▀▄▀
+                </span>
+                <span>01.</span> About Me
+            </h2>
+            <div class="grid" style="grid-template-columns: 2fr 1fr;">
+                <div>
+                    <p style="margin-bottom: 20px; color: var(--text-secondary);">
+                        I am a dedicated cybersecurity professional with a passion for offensive security and defense strategies. My background spans telecom environments and enterprise security awareness programs. I specialize in identifying vulnerabilities before valid threats
+                        do.
                     </p>
-                    <p class="text-lg text-slate-300">
-                        I am passionate about securing digital environments by performing in-depth security assessments, leading impactful awareness training for thousands of employees, and translating complex technical issues into clear business language.
+                    <p style="color: var(--text-secondary);">
+                        Currently based in <strong>Dubai, UAE</strong>, I am open to on-site or hybrid roles and can join immediately.
                     </p>
-                </div>
-            </div>
-        </section>
 
-        <section id="expertise" class="py-20 md:py-32 section-fade-in">
-            <h2 class="text-4xl font-bold text-center mb-16 text-slate-100">Core Competencies</h2>
-            <div class="max-w-6xl mx-auto grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-4 gap-6">
-                <div class="glass-card p-6 rounded-lg flex flex-col items-center justify-center gap-4 text-center">
-                    <i data-lucide="swords" class="w-12 h-12 text-[var(--accent-green)]"></i><span class="font-semibold text-slate-200">Penetration Testing</span>
-                </div>
-                <div class="glass-card p-6 rounded-lg flex flex-col items-center justify-center gap-4 text-center">
-                    <i data-lucide="clipboard-check" class="w-12 h-12 text-[var(--accent-green)]"></i><span class="font-semibold text-slate-200">ISO/IEC 27001 Audits</span>
-                </div>
-                <div class="glass-card p-6 rounded-lg flex flex-col items-center justify-center gap-4 text-center">
-                    <i data-lucide="shield-alert" class="w-12 h-12 text-[var(--accent-green)]"></i><span class="font-semibold text-slate-200">GRC & Risk Assessment</span>
-                </div>
-                <div class="glass-card p-6 rounded-lg flex flex-col items-center justify-center gap-4 text-center">
-                    <i data-lucide="scan-search" class="w-12 h-12 text-[var(--accent-green)]"></i><span class="font-semibold text-slate-200">Vulnerability Management</span>
-                </div>
-                <div class="glass-card p-6 rounded-lg flex flex-col items-center justify-center gap-4 text-center">
-                    <i data-lucide="key-round" class="w-12 h-12 text-[var(--accent-green)]"></i><span class="font-semibold text-slate-200">Red Team Operations</span>
-                </div>
-                <div class="glass-card p-6 rounded-lg flex flex-col items-center justify-center gap-4 text-center">
-                    <i data-lucide="users" class="w-12 h-12 text-[var(--accent-green)]"></i><span class="font-semibold text-slate-200">Social Engineering</span>
-                </div>
-                <div class="glass-card p-6 rounded-lg flex flex-col items-center justify-center gap-4 text-center">
-                    <i data-lucide="presentation" class="w-12 h-12 text-[var(--accent-green)]"></i><span class="font-semibold text-slate-200">Awareness Training</span>
-                </div>
-                <div class="glass-card p-6 rounded-lg flex flex-col items-center justify-center gap-4 text-center">
-                    <i data-lucide="file-check-2" class="w-12 h-12 text-[var(--accent-green)]"></i><span class="font-semibold text-slate-200">Policy Development</span>
-                </div>
-            </div>
-        </section>
-
-        <section id="skills" class="py-20 md:py-32 section-fade-in">
-            <h2 class="text-4xl font-bold text-center mb-16 text-slate-100">Skills & Tooling</h2>
-            <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div class="glass-card p-6 rounded-lg">
-                    <h3 class="text-xl font-bold text-[var(--accent-green)] mb-4">Penetration Testing</h3>
-                    <ul class="space-y-2 text-slate-300">
-                        <li><span class="text-[var(--accent-green)] mr-2">></span>Burp Suite Pro</li>
-                        <li><span class="text-[var(--accent-green)] mr-2">></span>Nmap</li>
-                        <li><span class="text-[var(--accent-green)] mr-2">></span>Nessus</li>
-                        <li><span class="text-[var(--accent-green)] mr-2">></span>Wireshark</li>
-                    </ul>
-                </div>
-                <div class="glass-card p-6 rounded-lg">
-                    <h3 class="text-xl font-bold text-[var(--accent-green)] mb-4">GRC & Compliance</h3>
-                    <ul class="space-y-2 text-slate-300">
-                        <li><span class="text-[var(--accent-green)] mr-2">></span>ISO/IEC 27001</li>
-                        <li><span class="text-[var(--accent-green)] mr-2">></span>Risk Assessment</li>
-                        <li><span class="text-[var(--accent-green)] mr-2">></span>Policy Development</li>
-                        <li><span class="text-[var(--accent-green)] mr-2">></span>Internal Audits</li>
-                    </ul>
-                </div>
-                <div class="glass-card p-6 rounded-lg">
-                    <h3 class="text-xl font-bold text-[var(--accent-green)] mb-4">IT Systems</h3>
-                    <ul class="space-y-2 text-slate-300">
-                        <li><span class="text-[var(--accent-green)] mr-2">></span>Windows / Linux</li>
-                        <li><span class="text-[var(--accent-green)] mr-2">></span>Jira (Atlassian)</li>
-                        <li><span class="text-[var(--accent-green)] mr-2">></span>Microsoft 365 Suite</li>
-                        <li><span class="text-[var(--accent-green)] mr-2">></span>Helpdesk & Troubleshooting</li>
-                    </ul>
-                </div>
-                <div class="glass-card p-6 rounded-lg">
-                    <h3 class="text-xl font-bold text-[var(--accent-green)] mb-4">Programming</h3>
-                    <ul class="space-y-2 text-slate-300">
-                        <li><span class="text-[var(--accent-green)] mr-2">></span>Python</li>
-                        <li><span class="text-[var(--accent-green)] mr-2">></span>HTML, CSS, JavaScript</li>
-                        <li><span class="text-[var(--accent-green)] mr-2">></span>PHP</li>
-                        <li><span class="text-[var(--accent-green)] mr-2">></span>MySQL</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <section id="certs" class="py-20 md:py-32 section-fade-in">
-            <h2 class="text-4xl font-bold text-center mb-16 text-slate-100">Industry Certifications</h2>
-            <div class="max-w-5xl mx-auto flex flex-wrap justify-center items-center gap-4">
-                <span class="skill-tag text-lg font-medium py-2 px-4 rounded-md">PNPT</span>
-                <span class="skill-tag text-lg font-medium py-2 px-4 rounded-md">CRTA</span>
-                <span class="skill-tag text-lg font-medium py-2 px-4 rounded-md">APIsec Certified Practitioner</span>
-                <span class="skill-tag text-lg font-medium py-2 px-4 rounded-md">ISO/IEC 27001 Lead Auditor</span>
-                <span class="skill-tag text-lg font-medium py-2 px-4 rounded-md">ISO/IEC 27001 Internal Auditor</span>
-                <span class="skill-tag text-lg font-medium py-2 px-4 rounded-md">Blue Team Junior Analyst</span>
-                <span class="skill-tag text-lg font-medium py-2 px-4 rounded-md">Cisco Cyber Threat Management</span>
-            </div>
-        </section>
-
-        <section id="casestudies" class="py-20 md:py-32 section-fade-in">
-            <h2 class="text-4xl font-bold text-center mb-16 text-slate-100">Case Studies</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="glass-card rounded-lg overflow-hidden group">
-                    <div class="p-6">
-                        <h3 class="text-2xl font-bold text-slate-100 mb-2">Enterprise Security Awareness Initiative</h3>
-                        <p class="text-slate-400 mb-4">Designed and executed a comprehensive security awareness program for an organization with over 3,000 employees. Led 6+ phishing simulation campaigns and developed 12+ training modules, resulting in a measurable increase in user
-                            reporting rates.</p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="skill-tag text-sm font-medium py-1 px-3 rounded-md">Phishing Simulation</span>
-                            <span class="skill-tag text-sm font-medium py-1 px-3 rounded-md">Awareness Training</span>
-                            <span class="skill-tag text-sm font-medium py-1 px-3 rounded-md">Behavior Monitoring</span>
+                    <div class="terminal-box">
+                        <div class="cmd-prompt">./show_summary.sh</div>
+                        <div style="margin-top: 10px; color: var(--accent-color);">
+                            "Cybersecurity Analyst and Penetration Tester with 3 years of hands-on experience in SOC operations, telecom environments, vulnerability assessment, ISO/IEC 27001 compliance, GRC, and enterprise security awareness programs."
                         </div>
                     </div>
                 </div>
-                <div class="glass-card rounded-lg overflow-hidden group">
-                    <div class="p-6">
-                        <h3 class="text-2xl font-bold text-slate-100 mb-2">Vulnerability Remediation Program</h3>
-                        <p class="text-slate-400 mb-4">Established a systematic vulnerability management framework. Performed enterprise-wide network and web application scans that identified over 100 critical findings. Collaborated with IT teams to achieve a 95% remediation rate within
-                            SLA.
-                        </p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="skill-tag text-sm font-medium py-1 px-3 rounded-md">Vulnerability Scanning</span>
-                            <span class="skill-tag text-sm font-medium py-1 px-3 rounded-md">Risk Prioritization</span>
-                            <span class="skill-tag text-sm font-medium py-1 px-3 rounded-md">Remediation Tracking</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="glass-card rounded-lg overflow-hidden group md:col-span-2">
-                    <div class="p-6">
-                        <h3 class="text-2xl font-bold text-slate-100 mb-2">ISMS Audit & Control Hardening</h3>
-                        <p class="text-slate-400 mb-4">Contributed to internal security audit initiatives based on ISO/IEC 27001. Identified gaps in the Information Security Management System (ISMS) and drove remediation by implementing crucial controls, including MFA, stronger password
-                            policies, SSO, and privilege management.</p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="skill-tag text-sm font-medium py-1 px-3 rounded-md">ISO 27001</span>
-                            <span class="skill-tag text-sm font-medium py-1 px-3 rounded-md">Internal Audit</span>
-                            <span class="skill-tag text-sm font-medium py-1 px-3 rounded-md">Security Hardening</span>
-                            <span class="skill-tag text-sm font-medium py-1 px-3 rounded-md">Access Control</span>
+                <div>
+                    <!-- 3D Rotating Cube -->
+                    <div class="cube-container">
+                        <div class="cube">
+                            <div class="cube-face"></div>
+                            <div class="cube-face"></div>
+                            <div class="cube-face"></div>
+                            <div class="cube-face"></div>
+                            <div class="cube-face"></div>
+                            <div class="cube-face"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="contact" class="py-20 md:py-32 text-center section-fade-in">
-            <h2 class="text-4xl font-bold mb-4 text-slate-100">Initiate Contact</h2>
-            <p class="max-w-2xl mx-auto text-lg text-slate-300 mb-8">
-                I am available for penetration testing engagements and comprehensive IT audits. If you need to rigorously test your defenses or verify your compliance posture, let's connect.
+        <section id="skills" class="container">
+            <h2 class="section-title">
+                <span style="font-size: 20px; vertical-align: middle;">
+                    <!-- Small Alien/Invader Pixel Art -->
+                    ▀▄▀
+                </span>
+                <span>02.</span> Technical Arsenal
+            </h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Offensive Security</h3>
+                    <p>Web, Network, & API Penetration Testing using industry-standard tools.</p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">Burp Suite</span>
+                        <span class="tech-tag">Nessus</span>
+                        <span class="tech-tag">Nmap</span>
+                        <span class="tech-tag">Metasploit</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Defensive Ops & SIEM</h3>
+                    <p>Monitoring and analyzing security incidents in real-time environments.</p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">QRadar SIEM</span>
+                        <span class="tech-tag">SOC Operations</span>
+                        <span class="tech-tag">Incident Response</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>GRC & Compliance</h3>
+                    <p>Ensuring standards and translating technical risk to business stakeholders.</p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">ISO/IEC 27001</span>
+                        <span class="tech-tag">Risk Assessment</span>
+                        <span class="tech-tag">Security Awareness</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="experience" class="container">
+            <h2 class="section-title">
+                <span style="font-size: 20px; vertical-align: middle;">
+                    <!-- Small Alien/Invader Pixel Art -->
+                    ▀▄▀
+                </span>
+                <span>03.</span> Mission History
+            </h2>
+
+            <div class="experience-item">
+                <div class="exp-header">
+                    <div>
+                        <span class="exp-role">Cybersecurity Analyst & Pen Tester</span>
+                        <span class="exp-company"> @ Telecom Sector (Previous)</span>
+                    </div>
+                    <span class="exp-date">3 Years Experience</span>
+                </div>
+                <ul style="list-style: none; color: var(--text-secondary); margin-top: 15px;">
+                    <li style="margin-bottom: 10px;">▹ Led phishing simulations and security training for <strong>3,000+
+                            users</strong>, significantly improving organizational security posture.</li>
+                    <li style="margin-bottom: 10px;">▹ Conducted comprehensive vulnerability assessments and penetration testing on critical infrastructure.</li>
+                    <li style="margin-bottom: 10px;">▹ Managed SOC operations and utilized QRadar SIEM for threat detection and analysis.</li>
+                    <li style="margin-bottom: 10px;">▹ Strong expertise in translating technical risks into business-focused remediation strategies.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="contact" class="container" style="text-align: center; max-width: 600px;">
+            <h2 class="section-title" style="justify-content: center; display: block;">
+                <span style="font-size: 20px; vertical-align: middle;">
+                    <!-- Small Alien/Invader Pixel Art -->
+                    ▀▄▀
+                </span>
+                <span>04.</span> Establish Connection
+            </h2>
+            <p style="color: var(--text-secondary); margin-bottom: 30px;">
+                I am currently looking for new opportunities in Dubai, UAE. Whether you have a question or just want to discuss security, my inbox is open.
             </p>
-            <a href="mailto:thutaphonezaw1998@gmail.com" class="font-bold py-4 px-8 glow-button inline-flex items-center gap-2 text-xl">
-                <i data-lucide="send"></i> Open Secure Channel
-            </a>
+            <a href="mailto:your.email@example.com" class="cta-btn">Send Encrypted Message</a>
+            <div style="margin-top: 50px; font-family: var(--font-mono); color: #555;">
+                <p>Location: Dubai, UAE</p>
+                <p>Status: Immediate Availability</p>
+            </div>
         </section>
     </main>
 
-    <footer class="border-t border-[var(--border-color)] mt-20">
-        <div class="container mx-auto px-6 py-6 flex flex-col sm:flex-row justify-between items-center text-slate-500 gap-4">
-            <p>&copy; 2025 Thu Ta Phone Zaw // STATUS: OPERATIONAL</p>
-            <div class="flex items-center gap-4">
-                <a href="https://www.linkedin.com/in/0xlux" target="_blank" class="text-slate-500 hover:text-[var(--accent-green)] transition-colors"><i data-lucide="linkedin"></i></a>
-                <a href="https://github.com/thutaphonezaw" target="_blank" class="text-slate-500 hover:text-[var(--accent-green)] transition-colors"><i data-lucide="github"></i></a>
-            </div>
+    <footer>
+        <div class="container">
+            <p>Designed & Built by <span style="color: var(--accent-color);">TTPZ</span> // 2026</p>
         </div>
     </footer>
 
     <script>
-        lucide.createIcons();
+        // Typing Effect for Role Title
+        const textElement = document.querySelector('.role-title');
+        const text = textElement.innerText;
+        textElement.innerText = '';
 
-        // --- Mobile Menu Toggle ---
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-        mobileMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-        document.querySelectorAll('#mobile-menu a, nav a').forEach(link => {
-            link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
-        });
+        let i = 0;
 
-        // --- Section Fade-in on Scroll ---
-        const sections = document.querySelectorAll('.section-fade-in');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('visible');
+        function typeWriter() {
+            if (i < text.length) {
+                textElement.innerHTML += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, 50); // Adjust speed here
+            } else {
+                // Add blinking cursor at the end
+                textElement.innerHTML += '<span class="blink">_</span>';
+            }
+        }
+
+        // Start typing effect when page loads
+        window.addEventListener('load', typeWriter);
+
+        // Simple smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
             });
-        }, {
-            threshold: 0.1
         });
-        sections.forEach(section => observer.observe(section));
 
-        // --- Animated Canvas Background ---
-        const canvas = document.getElementById('canvas-bg');
+        // Particle Network Animation
+        const canvas = document.getElementById('network-canvas');
         const ctx = canvas.getContext('2d');
-        let particles = [];
-        const accentColor = 'rgba(57, 255, 20, 0.8)';
+        let particlesArray;
 
-        function resizeCanvas() {
+        // Set canvas size
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // Handle resize
+        window.addEventListener('resize', () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
+            init();
+        });
+
+        // Mouse interaction
+        const mouse = {
+            x: null,
+            y: null,
+            radius: 150
         }
 
+        window.addEventListener('mousemove', (event) => {
+            mouse.x = event.x;
+            mouse.y = event.y;
+        });
+
+        // Create Particle Class
         class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.vx = (Math.random() - 0.5) * 0.3;
-                this.vy = (Math.random() - 0.5) * 0.3;
-                this.size = Math.random() * 1.5 + 0.5;
+            constructor(x, y, directionX, directionY, size, color) {
+                this.x = x;
+                this.y = y;
+                this.directionX = directionX;
+                this.directionY = directionY;
+                this.size = size;
+                this.color = color;
             }
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-            }
+
+            // Draw method
             draw() {
-                ctx.fillStyle = accentColor;
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                ctx.fillStyle = this.color;
                 ctx.fill();
             }
-        }
 
-        function initParticles() {
-            particles = [];
-            const particleCount = Math.floor((canvas.width * canvas.height) / 20000);
-            for (let i = 0; i < particleCount; i++) {
-                particles.push(new Particle());
+            // Update method
+            update() {
+                // Check if particle is still within canvas
+                if (this.x > canvas.width || this.x < 0) {
+                    this.directionX = -this.directionX;
+                }
+                if (this.y > canvas.height || this.y < 0) {
+                    this.directionY = -this.directionY;
+                }
+
+                // Move particle
+                this.x += this.directionX;
+                this.y += this.directionY;
+
+                // Mouse interactivity
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < mouse.radius + this.size) {
+                    if (mouse.x < this.x && this.x < canvas.width - this.size * 10) {
+                        this.x += 2;
+                    }
+                    if (mouse.x > this.x && this.x > this.size * 10) {
+                        this.x -= 2;
+                    }
+                    if (mouse.y < this.y && this.y < canvas.height - this.size * 10) {
+                        this.y += 2;
+                    }
+                    if (mouse.y > this.y && this.y > this.size * 10) {
+                        this.y -= 2;
+                    }
+                }
+
+                this.draw();
             }
         }
 
-        function handleParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-                particles[i].draw();
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    if (distance < 120) {
+        function init() {
+            particlesArray = [];
+            let numberOfParticles = (canvas.height * canvas.width) / 9000;
+            for (let i = 0; i < numberOfParticles; i++) {
+                let size = (Math.random() * 2) + 1;
+                let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+                let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+                let directionX = (Math.random() * 0.4) - 0.2;
+                let directionY = (Math.random() * 0.4) - 0.2;
+                let color = '#00ff41'; // Matrix Green
+
+                particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
+            }
+        }
+
+        // Animation Loop
+        function animate() {
+            requestAnimationFrame(animate);
+            ctx.clearRect(0, 0, innerWidth, innerHeight);
+
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+            }
+            connect();
+        }
+
+        // Draw lines between particles
+        function connect() {
+            let opacityValue = 1;
+            for (let a = 0; a < particlesArray.length; a++) {
+                for (let b = a; b < particlesArray.length; b++) {
+                    let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x)) +
+                        ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
+
+                    if (distance < (canvas.width / 7) * (canvas.height / 7)) {
+                        opacityValue = 1 - (distance / 20000);
+                        ctx.strokeStyle = 'rgba(0, 255, 65,' + opacityValue * 0.2 + ')'; // Low opacity lines
+                        ctx.lineWidth = 1;
                         ctx.beginPath();
-                        ctx.strokeStyle = `rgba(57, 255, 20, ${1 - distance / 120})`;
-                        ctx.lineWidth = 0.3;
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+                        ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
                         ctx.stroke();
                     }
                 }
             }
-            requestAnimationFrame(handleParticles);
         }
 
-        window.addEventListener('resize', () => {
-            resizeCanvas();
-            initParticles();
-        });
-
-        resizeCanvas();
-        initParticles();
-        handleParticles();
-
-        // --- Hero Text Scramble Effect ---
-        class TextScramble {
-            constructor(el) {
-                this.el = el;
-                this.chars = '!<>-_\\/[]{}—=+*^?#________';
-                this.update = this.update.bind(this);
-            }
-            setText(newText) {
-                const oldText = this.el.innerText;
-                const length = Math.max(oldText.length, newText.length);
-                const promise = new Promise(resolve => this.resolve = resolve);
-                this.queue = [];
-                for (let i = 0; i < length; i++) {
-                    const from = oldText[i] || '';
-                    const to = newText[i] || '';
-                    const start = Math.floor(Math.random() * 40);
-                    const end = start + Math.floor(Math.random() * 40);
-                    this.queue.push({
-                        from,
-                        to,
-                        start,
-                        end
-                    });
-                }
-                cancelAnimationFrame(this.frameRequest);
-                this.frame = 0;
-                this.update();
-                return promise;
-            }
-            update() {
-                let output = '';
-                let complete = 0;
-                for (let i = 0, n = this.queue.length; i < n; i++) {
-                    let {
-                        from,
-                        to,
-                        start,
-                        end,
-                        char
-                    } = this.queue[i];
-                    if (this.frame >= end) {
-                        complete++;
-                        output += to;
-                    } else if (this.frame >= start) {
-                        if (!char || Math.random() < 0.28) {
-                            char = this.randomChar();
-                            this.queue[i].char = char;
-                        }
-                        output += `<span class="opacity-50">${char}</span>`;
-                    } else {
-                        output += from;
-                    }
-                }
-                this.el.innerHTML = output;
-                if (complete === this.queue.length) {
-                    this.resolve();
-                } else {
-                    this.frameRequest = requestAnimationFrame(this.update);
-                    this.frame++;
-                }
-            }
-            randomChar() {
-                return this.chars[Math.floor(Math.random() * this.chars.length)];
-            }
-        }
-
-        const heroTitle = document.getElementById('hero-title');
-        const fx = new TextScramble(heroTitle);
-
-        const originalText = heroTitle.innerText.trim();
-
-        setTimeout(() => {
-            fx.setText(originalText);
-        }, 1000);
-
-        setInterval(() => {
-            fx.setText(originalText);
-        }, 60000);
+        init();
+        animate();
     </script>
 </body>
 
